@@ -23,12 +23,12 @@ class MotionDetectionService : LifecycleService() {
 
     override fun onCreate() {
         super.onCreate()
-        // WakeLock
+
         val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Motion::WakeLock")
         wakeLock.acquire()
 
-        // Notification
+
         startForeground(1, NotificationHelper.createNotification(this))
 
         recorderManager = RecorderManager(this)
@@ -50,22 +50,27 @@ class MotionDetectionService : LifecycleService() {
     private fun delegateMotionAnalyzer(): MotionAnalyzer = MotionAnalyzer {
         Log.d("MotionService", "\uD83D\uDCA5 Mouvement détecté !")
         lifecycleScope.launch {
-            delay(30_000)
+            delay(TEMPO_DURATION)
             val file = getOutputFile()
-            recorderManager.startRecording(
-                outputFile = file,
-                onStart = { Log.d("Recorder", "Start") },
-                onFinish = { Log.d("Recorder", "Saved to: $it") }
-            )
+                recorderManager.startRecording(
+                    videoCapture = cameraManager.videoCapture,
+                    outputFile = file,
+                    onStart = { Log.d("Recorder", "▶ Enregistrement démarré") },
+                    onFinish = { Log.d("Recorder", "\uD83D\uDCBE Enregistré à : $it") }
+                )
             cameraManager.toggleFlash(true)
-            delay(60_000)
+            delay(REC_DURATION)
             recorderManager.stopRecording()
             cameraManager.toggleFlash(false)
             delay(5_000)
-
             motionAnalyzer.resetCooldown()
 
         }
+    }
+
+    companion object {
+        const val REC_DURATION = 10_000L
+        const val TEMPO_DURATION = 5_000L
     }
 
 }

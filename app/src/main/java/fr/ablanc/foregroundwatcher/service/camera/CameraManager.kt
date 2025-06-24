@@ -19,6 +19,7 @@ class CameraManager(
 ) {
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
     private lateinit var camera: Camera
+    lateinit var videoCapture: VideoCapture<Recorder>
 
     fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
@@ -32,11 +33,12 @@ class CameraManager(
                     it.setAnalyzer(executor, analyzer)
                 }
 
-            val videoCapture = VideoCapture.withOutput(
+            val recorder =
                 Recorder.Builder()
                     .setExecutor(executor)
                     .build()
-            )
+
+            videoCapture = VideoCapture.withOutput(recorder)
 
             val selector = CameraSelector.DEFAULT_BACK_CAMERA
 

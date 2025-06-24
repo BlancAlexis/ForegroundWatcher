@@ -2,20 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Caméra + Audio -->
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-    <!-- Pour écrire dans DCIM -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <!-- Pour service en foreground avec caméra -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
 
-    <!-- Pour WakeLock (écran éteint) -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
@@ -50,6 +47,9 @@
             android:name=".service.MotionDetectionService"
             android:exported="false"
             android:foregroundServiceType="camera" />
+
+        <receiver android:name=".notification.StopServiceReceiver" android:exported="false"/>
+
     </application>
 
 </manifest>

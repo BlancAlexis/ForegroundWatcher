@@ -48,15 +48,15 @@ class MotionDetectionService : LifecycleService() {
     }
 
     private fun delegateMotionAnalyzer(): MotionAnalyzer = MotionAnalyzer {
-        Log.d("MotionService", "\uD83D\uDCA5 Mouvement détecté !")
+        Log.d("MotionService", "Mouvement détecté !")
         lifecycleScope.launch {
             delay(TEMPO_DURATION)
             val file = getOutputFile()
                 recorderManager.startRecording(
                     videoCapture = cameraManager.videoCapture,
                     outputFile = file,
-                    onStart = { Log.d("Recorder", "▶ Enregistrement démarré") },
-                    onFinish = { Log.d("Recorder", "\uD83D\uDCBE Enregistré à : $it") }
+                    onStart = { Log.d("Recorder", " Enregistrement démarré") },
+                    onFinish = { Log.d("Recorder", " Enregistré à : $it") }
                 )
             cameraManager.toggleFlash(true)
             delay(REC_DURATION)
@@ -69,8 +69,8 @@ class MotionDetectionService : LifecycleService() {
     }
 
     companion object {
-        const val REC_DURATION = 10_000L
-        const val TEMPO_DURATION = 5_000L
+        const val REC_DURATION = 60_000L
+        const val TEMPO_DURATION = 25_000L
     }
 
 }

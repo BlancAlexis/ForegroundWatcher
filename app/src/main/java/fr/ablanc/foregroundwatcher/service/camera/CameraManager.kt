@@ -5,6 +5,8 @@ import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.video.Quality
+import androidx.camera.video.QualitySelector
 import androidx.camera.video.Recorder
 import androidx.camera.video.VideoCapture
 import androidx.core.content.ContextCompat
@@ -27,6 +29,7 @@ class CameraManager(
             val provider = cameraProviderFuture.get()
 
             val analysis = ImageAnalysis.Builder()
+                .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_YUV_420_888)
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
                 .also {
@@ -35,6 +38,7 @@ class CameraManager(
 
             val recorder =
                 Recorder.Builder()
+                    .setQualitySelector(QualitySelector.from(Quality.HD))
                     .setExecutor(executor)
                     .build()
 
